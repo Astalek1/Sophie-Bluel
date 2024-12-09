@@ -2,13 +2,10 @@
 
 async function maRecuperationApi() {
     const reponse = await fetch("http://localhost:5678/api/works");
-    console.log('reponse: ', reponse);
     const api = await reponse.json();
-    console.log(api);
 
 
-
-    //fonction de récupération de la gallery//
+    //........................fonction de récupération de la gallery.............................//
 
     //pour ciblé la section portfolio
     const portfolioSection = document.getElementById("portfolio");
@@ -30,6 +27,9 @@ async function maRecuperationApi() {
         img.alt = item.title;
         figcaption.textContent = item.title;
 
+        // Ajoute la catégorie pour le filtrage
+        figure.dataset.category = item.category.name.toLowerCase();
+
         // structure
         figure.appendChild(img);
         figure.appendChild(figcaption);
@@ -40,42 +40,69 @@ async function maRecuperationApi() {
 
     portfolioSection.appendChild(gallery);
 
-    // récupération des filtres//
+
+    // .................mise en place  des filtres......................................//
 
     // Appelle genereFiltres avec les données API
     genereFiltres(api);
 
-
     function genereFiltres(data) {
 
-        // Extraire toutes les catégories uniques
+        // Extraire les catégories uniques à partir de category.name
+        const categories = [...new Set(data
+            .filter(item => item.category && item.category.name) // Vérifie que category et name existent
+            .map(item => item.category.name.toLowerCase()))]; // Transforme en minuscule
 
-        //obtention des catégories
-        //const categories = [...new Set(data.map(item => item.category))];
+        // Ajoute un filtre "Tous" au début
+        categories.unshift("tous");
+        console.log("Catégories uniques extraites :", categories);
 
-        //pour ciblé la section portfolio
-        const portfolioSection = document.getElementById("portfolio");
-
-        //création des conteneurs pour les filtres
+        // Création des conteneurs pour les filtres
         const filterContainer = document.createElement("div");
         filterContainer.className = "filters";
 
-        // Liste des filtres (boutons)
-        const filters = ["Tous", "Objets", "Appartements", "Hotels & restaurants"];
-
         // Crée et insère chaque bouton
-        filters.forEach(filter => {
+        categories.forEach(filter => {
             const button = document.createElement("button");
-            button.textContent = filter;
-            button.className = "filter-button"; // Classe pour le style
-            button.dataset.filter = filter.toLowerCase(); // Ajoute un attribut data-filter pour le filtrage
+            button.textContent = filter.charAt(0).toUpperCase() + filter.slice(1); // Met la première lettre en majuscule
+            button.className = "filter-button";
+            button.dataset.filter = filter; // Ajoute un attribut data-filter pour le filtrage
             filterContainer.appendChild(button);
         });
 
-        // Ajoute le conteneur des filtres à la section portfolio
+        // Ajoute les filtres à la section portfolio
+        const portfolioSection = document.getElementById("portfolio");
         portfolioSection.insertBefore(filterContainer, portfolioSection.querySelector(".gallery"));
-    }
 
+        // Sélectionne tous les boutons de filtre
+        const filterButtons = document.querySelectorAll(".filter-button");
+        // Récupère tous les éléments de la galerie
+        const galleryItems = document.querySelectorAll(".gallery figure");
+
+        // Ajoute un événement "click" à chaque bouton
+        filterButtons.forEach(button => {
+            button.addEventListener("click", (event) => {
+                // Récupère le filtre sélectionné
+                const filter = event.target.dataset.filter;
+
+                // Ajoute une classe "active" au bouton cliqué et enlève-la des autres
+                filterButtons.forEach(btn => btn.classList.remove("active"));
+                button.classList.add("active");
+
+                // Filtre les éléments de la galerie
+                galleryItems.forEach(item => {
+                    if (filter === "tous" || item.dataset.category === filter) {
+                        item.style.display = "block"; // Affiche l'élément
+                    } else {
+                        item.style.display = "none"; // Cache l'élément
+                    }
+                });
+
+                // Affiche le filtre dans la console (pour debug)
+                console.log(`Filtre sélectionné : ${filter}`);
+            });
+        });
+    }
 }
 
 maRecuperationApi()
