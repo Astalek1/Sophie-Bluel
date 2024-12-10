@@ -116,6 +116,7 @@ ul {
 	list-style: none;
 }
 
+
 blockquote,
 q {
 	quotes: none;
@@ -318,4 +319,21 @@ footer nav ul {
 .filter-button.active {
 	background-color: #004d40;
 	color: white;
+}
+
+
+/* page login */
+
+main {
+	display: inline-block;
+	justify-content: center;
+	align-items: center;
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
 }
