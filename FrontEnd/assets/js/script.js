@@ -3,7 +3,7 @@
 async function work() {
     const reponse = await fetch("http://localhost:5678/api/works");
     const works = await reponse.json();
-    console.log(works);
+
 
 
     //........................fonction de récupération de la gallery.............................//
@@ -17,7 +17,6 @@ async function work() {
 
     // Parcourt les données pour créer les éléments HTML
     works.forEach(item => {
-        console.log(item);
 
         // éléments créé
         const figure = document.createElement(`figure`);
@@ -45,29 +44,27 @@ async function work() {
 
     // .................mise en place  des filtres......................................//
 
-    genereFiltres(works);
+    categories();
 }
 
-function genereFiltres(data) {
+async function categories() {
+    // Récupération des catégories via fetch
+    const response = await fetch("http://localhost:5678/api/categories");
+    const objects = await response.json();
 
-    // Extraire les catégories uniques à partir de category.name
-    const categories = [...new Set(data
-        .filter(item => item.category && item.category.name) // Vérifie que category et name existent
-        .map(item => item.category.name.toLowerCase()))]; // Transforme en minuscule
+    // Ajout de "Tous" directement
+    const ObjectsList = ["tous", ...objects.map(item => item.name.toLowerCase())];
 
-    // Ajoute un filtre "Tous" au début
-    categories.unshift("tous");
-
-    // Création des conteneurs pour les filtres
+    // Création du conteneur pour les filtres
     const filterContainer = document.createElement("div");
     filterContainer.className = "filters";
 
-    // Crée et insère chaque bouton
-    categories.forEach(filter => {
+    // Créer et insérer chaque bouton
+    ObjectsList.forEach(filterName => {
         const button = document.createElement("button");
-        button.textContent = filter.charAt(0).toUpperCase() + filter.slice(1); // Met la première lettre en majuscule
+        button.textContent = filterName.charAt(0).toUpperCase() + filterName.slice(1);
         button.className = "filter-button";
-        button.dataset.filter = filter; // Ajoute un attribut data-filter pour le filtrage
+        button.dataset.filter = filterName;
         filterContainer.appendChild(button);
     });
 
@@ -75,37 +72,29 @@ function genereFiltres(data) {
     const portfolioSection = document.getElementById("portfolio");
     portfolioSection.insertBefore(filterContainer, portfolioSection.querySelector(".gallery"));
 
-    // Sélectionne tous les boutons de filtre
+    // Ajouter les événements de clic pour chaque bouton
     const filterButtons = document.querySelectorAll(".filter-button");
-    // Récupère tous les éléments de la galerie
     const galleryItems = document.querySelectorAll(".gallery figure");
 
-
-    // Ajoute un événement "click" à chaque bouton
     filterButtons.forEach(button => {
         button.addEventListener("click", (event) => {
-            // Récupère le filtre sélectionné
-            const filter = event.target.dataset.filter;
+            const selectedFilter = event.target.dataset.filter;
 
-            // Ajoute une classe "active" au bouton cliqué et enlève-la des autres
+            // Ajoute une classe "active" au bouton cliqué
             filterButtons.forEach(btn => btn.classList.remove("active"));
             event.target.classList.add("active");
 
             // Filtre les éléments de la galerie
             galleryItems.forEach(item => {
-                if (filter === "tous" || item.dataset.category === filter) {
-                    item.style.display = "block"; // Affiche l'élément
+                if (selectedFilter === "tous" || item.dataset.category === selectedFilter) {
+                    item.style.display = "block";
                 } else {
-                    item.style.display = "none"; // Cache l'élément
+                    item.style.display = "none";
                 }
             });
 
-            // Affiche le filtre dans la console (pour debug)
-            //console.log(`Filtre sélectionné : ${filter}`);
         });
     });
-    // Appelle genereFiltres avec les données API
 }
-
 
 work()
