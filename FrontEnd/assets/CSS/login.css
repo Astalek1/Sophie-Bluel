@@ -152,7 +152,6 @@ body {
     background-color: #FCF9EB;
     /* Fond spécifique à la page login */
     overflow: hidden;
-    border: red 1px solid;
     /* Empêche tout débordement non voulu */
     display: flex;
     flex-direction: column;

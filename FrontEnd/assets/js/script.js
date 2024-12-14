@@ -1,8 +1,8 @@
 //fonction de récupération de l'API (global)
 
 async function work() {
-    const reponse = await fetch("http://localhost:5678/api/works");
-    const works = await reponse.json();
+    const response = await fetch("http://localhost:5678/api/works");
+    const works = await response.json();
 
 
 
@@ -20,6 +20,10 @@ async function work() {
 
         // éléments créé
         const figure = document.createElement(`figure`);
+
+        // Ajout de l'ID de la catégorie
+        figure.dataset.categoryId = item.categoryId.toString(); // Convertir en chaîne pour comparaison
+
         const img = document.createElement(`img`);
         const figcaption = document.createElement(`figcaption`);
 
@@ -41,11 +45,11 @@ async function work() {
 
     portfolioSection.appendChild(gallery);
 
-
-    // .................mise en place  des filtres......................................//
-
     categories();
 }
+
+// .................mise en place  des filtres......................................//
+
 
 async function categories() {
     // Récupération des catégories via fetch
@@ -53,18 +57,18 @@ async function categories() {
     const objects = await response.json();
 
     // Ajout de "Tous" directement
-    const ObjectsList = ["tous", ...objects.map(item => item.name.toLowerCase())];
+    const ObjectsList = [{ id: "tous", name: "Tous" }, ...objects];
 
     // Création du conteneur pour les filtres
     const filterContainer = document.createElement("div");
     filterContainer.className = "filters";
 
     // Créer et insérer chaque bouton
-    ObjectsList.forEach(filterName => {
+    ObjectsList.forEach(category => {
         const button = document.createElement("button");
-        button.textContent = filterName.charAt(0).toUpperCase() + filterName.slice(1);
+        button.textContent = category.name;
         button.className = "filter-button";
-        button.dataset.filter = filterName;
+        button.dataset.filterId = category.id.toString(); // Utilisation de l'ID comme référence pour le filtrage
         filterContainer.appendChild(button);
     });
 
@@ -78,7 +82,7 @@ async function categories() {
 
     filterButtons.forEach(button => {
         button.addEventListener("click", (event) => {
-            const selectedFilter = event.target.dataset.filter;
+            const selectedFilterId = event.target.dataset.filterId; // Récupère l'ID du filtre sélectionné
 
             // Ajoute une classe "active" au bouton cliqué
             filterButtons.forEach(btn => btn.classList.remove("active"));
@@ -86,7 +90,7 @@ async function categories() {
 
             // Filtre les éléments de la galerie
             galleryItems.forEach(item => {
-                if (selectedFilter === "tous" || item.dataset.category === selectedFilter) {
+                if (selectedFilterId === "tous" || item.dataset.categoryId === selectedFilterId) {
                     item.style.display = "block";
                 } else {
                     item.style.display = "none";
@@ -95,6 +99,15 @@ async function categories() {
 
         });
     });
+}
+
+
+function redirectToLogin() {
+    window.location.href = "./login.html";
+}
+
+function redirectToProjects() {
+    window.location.href = "./index.html";
 }
 
 work()
