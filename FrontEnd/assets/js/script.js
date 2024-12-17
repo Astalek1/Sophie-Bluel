@@ -106,8 +106,5 @@ function redirectToLogin() {
     window.location.href = "./login.html";
 }
 
-function redirectToProjects() {
-    window.location.href = "./index.html";
-}
 
 work()
