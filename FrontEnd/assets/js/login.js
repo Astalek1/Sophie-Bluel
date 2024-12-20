@@ -24,14 +24,22 @@ async function loginValidation(email, password) {
         if (data.userId && data.token) {
             //window.location.href = 'page-connexion.html'; // Redirection en cas de succès
             console.log("login valide")
+
+        } else {
+            console.log("mauvais mdp");
+
+            const loginError = "Erreur de login";
+            const zoneError = document.createElement(`p`);
+            zoneError.style.color = "red";
+            document.querySelector("form").appendChild(zoneError);
+            zoneError.textContent = loginError;
         }
+
+
     } catch (error) {
-        // Aucune action visible en cas d'erreur
-        console.log("erreur")
+
     }
 }
-
-
 
 function redirectToProjects() {
     window.location.href = "./index.html";
