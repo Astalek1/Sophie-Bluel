@@ -22,22 +22,22 @@ async function loginValidation(email, password) {
         const data = await response.json();
 
         if (data.userId && data.token) {
-            //window.location.href = 'page-connexion.html'; // Redirection en cas de succès
             console.log("login valide")
+
+
 
         } else {
             console.log("mauvais mdp");
 
-            const loginError = "Erreur de login";
-            const zoneError = document.createElement(`p`);
-            zoneError.style.color = "red";
-            document.querySelector("form").appendChild(zoneError);
-            zoneError.textContent = loginError;
+            const messageLoginError = "Erreur de login";
+            const messageError = document.createElement(`p`);
+            messageError.style.color = "red";
+            document.querySelector("form").appendChild(messageError);
+            messageError.textContent = messageLoginError;
+
         }
-
-
     } catch (error) {
-
+        console.error("Une erreur est survenue :", error.message);
     }
 }
 

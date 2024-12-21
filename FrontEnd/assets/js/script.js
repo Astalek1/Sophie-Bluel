@@ -55,7 +55,7 @@ async function displayCategories() {
     const categories = await response.json();
 
     // Ajout de "Tous" directement
-    const categoriesList = [{ id: "tous", name: "Tous", classList: "active" }, ...categories];
+    const categoriesList = [{ id: "tous", name: "Tous", }, ...categories];
     // Création du conteneur pour les filtres
     const filterContainer = document.createElement("div");
     filterContainer.classList.add("filters");
@@ -73,9 +73,9 @@ async function displayCategories() {
     const portfolioSection = document.getElementById("portfolio");
     portfolioSection.insertBefore(filterContainer, portfolioSection.querySelector(".gallery"));
 
-
-    const tous = document.querySelector('[data-filter-id="tous"]');
-    tous.classList.add("active");
+    // le boutton tous est vert au chargement de la page.
+    const filterTous = document.querySelector('[data-filter-id="tous"]');
+    filterTous.classList.add("active");
 
 
     // Ajouter les événements de clic pour chaque bouton
@@ -106,10 +106,41 @@ async function displayCategories() {
     });
 }
 
+
+function editionPage() {
+
+    const banner = document.createElement(`div`);
+    banner.classList.add("banner");
+
+    const iconBanner = document.createElement(`i`);
+    iconBanner.classList.add("fa-solid", "fa-pen-to-square");
+
+    const editionMode = document.createElement(`span`);
+    editionMode.textContent = "Mode édition";
+
+    const btnModifier = document.createElement(`button`);
+    btnModifier.classList.add("btn-modifier");
+
+    const txtModifier = document.createElement(`span`);
+    txtModifier.textContent = "modifier";
+
+    const iconTxtmodifier = document.createElement(`i`);
+    iconTxtmodifier.classList.add("fa-solid", "fa-pen-to-square");
+
+    banner.appendChild(iconBanner);
+    banner.appendChild(editionMode);
+    document.querySelector("header").appendChild(banner);
+
+    btnModifier.appendChild(iconTxtmodifier);
+    btnModifier.appendChild(txtModifier);
+    document.getElementById("portfolio").appendChild(btnModifier);
+
+}
+
 function redirectToLogin() {
     window.location.href = "./login.html";
 }
 
-
 work()
 displayCategories();
+//editionPage();

@@ -150,6 +150,7 @@ body {
 	font-size: 14px;
 	background-color: #FCF9EB;
 	padding: 50px 200px 0;
+	position: relative;
 }
 
 header {
@@ -341,4 +342,31 @@ footer nav ul {
 .filter-button.active {
 	background-color: #004d40;
 	color: white;
+}
+
+/*********** Mode edition ************/
+
+.banner {
+	position: absolute;
+	/* Positionné par rapport au body */
+	top: 0;
+	left: 0;
+	right: 0;
+
+	background-color: black;
+	color: white;
+	text-align: center;
+	padding: 20px;
+	font-size: 18px;
+	margin: auto;
+}
+
+.btn-modifier {
+	cursor: pointer;
+	border: none;
+	background: none;
+	position: absolute;
+	top: 16.8%;
+	right: 35%;
+	font-size: 18px;
 }
