@@ -137,9 +137,6 @@ table {
 
 /** end reset css**/
 
-html {
-	background-color: white;
-}
 
 body {
 
@@ -149,8 +146,8 @@ body {
 	font-family: 'Work Sans';
 	font-size: 14px;
 	background-color: #FCF9EB;
-	padding: 50px 200px 0;
-	position: relative;
+	padding-top: 50px;
+	/*position: relative;*/
 }
 
 header {
@@ -297,21 +294,19 @@ input[type="submit"] {
 }
 
 footer {
-	width: 135%;
+	width: 225%;
 	background-color: white;
-	height: 60px;
+	height: 70px;
 	position: relative;
-	left: -200px;
-
+	left: -63%
 }
 
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
 	margin: 2em;
-	padding-top: 20px;
-	padding-right: 100px;
-
+	padding-top: 22px;
+	padding-right: 25%;
 }
 
 /* création des bouttons */
@@ -365,8 +360,9 @@ footer nav ul {
 	cursor: pointer;
 	border: none;
 	background: none;
-	position: absolute;
-	top: 16.8%;
-	right: 35%;
+	position: relative;
+	left: 60%;
+	bottom: 3em;
+	z-index: 10;
 	font-size: 18px;
 }

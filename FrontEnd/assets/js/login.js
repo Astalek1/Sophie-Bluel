@@ -23,19 +23,31 @@ async function loginValidation(email, password) {
 
         if (data.userId && data.token) {
             console.log("login valide")
-
-
+            sessionStorage.setItem("id", data.userId);
+            sessionStorage.setItem("token", data.token);
+            console.log(sessionStorage);
+            //retour vers la page projet en activant le mode administateur.
+            window.location.href = "./index.html";
 
         } else {
             console.log("mauvais mdp");
 
             const messageLoginError = "Erreur de login";
-            const messageError = document.createElement(`p`);
-            messageError.style.color = "red";
-            document.querySelector("form").appendChild(messageError);
-            messageError.textContent = messageLoginError;
 
+            let messageError = document.querySelector(".errorMessage");
+
+            if (!messageError) {
+
+
+                messageError = document.createElement(`p`);
+                messageError.classList.add("errorMessage");
+                messageError.style.color = "red";
+                document.querySelector("form").appendChild(messageError);
+            }
+
+            messageError.textContent = messageLoginError;
         }
+
     } catch (error) {
         console.error("Une erreur est survenue :", error.message);
     }

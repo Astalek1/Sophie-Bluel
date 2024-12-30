@@ -1,10 +1,11 @@
+
 //fonction de récupération de l'API (global)
 
 async function work() {
+
+
     const response = await fetch("http://localhost:5678/api/works");
     const works = await response.json();
-
-
 
     //........................fonction de récupération de la gallery.............................//
 
@@ -47,15 +48,21 @@ async function work() {
 }
 
 // .................mise en place  des filtres......................................//
+async function filtersSelect() {
 
 
-async function displayCategories() {
     // Récupération des catégories via fetch
     const response = await fetch("http://localhost:5678/api/categories");
     const categories = await response.json();
 
+    if (sessionStorage.getItem('id') && sessionStorage.getItem('token')) {
+        console.log("filtersSelect est bloquée");
+        return;
+    }
+
+
     // Ajout de "Tous" directement
-    const categoriesList = [{ id: "tous", name: "Tous", }, ...categories];
+    const categoriesList = [{ id: 0, name: "Tous", }, ...categories];
     // Création du conteneur pour les filtres
     const filterContainer = document.createElement("div");
     filterContainer.classList.add("filters");
@@ -73,8 +80,8 @@ async function displayCategories() {
     const portfolioSection = document.getElementById("portfolio");
     portfolioSection.insertBefore(filterContainer, portfolioSection.querySelector(".gallery"));
 
-    // le boutton tous est vert au chargement de la page.
-    const filterTous = document.querySelector('[data-filter-id="tous"]');
+    // le boutton Tous est vert au chargement de la page.
+    const filterTous = document.querySelector('[data-filter-id= "0"]');
     filterTous.classList.add("active");
 
 
@@ -95,7 +102,7 @@ async function displayCategories() {
 
             // Filtre les éléments de la galerie
             galleryItems.forEach(item => {
-                if (selectedFilterId === "tous" || item.dataset.categoryId === selectedFilterId) {
+                if (selectedFilterId === "0" || item.dataset.categoryId === selectedFilterId) {
                     item.style.display = "block";
                 } else {
                     item.style.display = "none";
@@ -104,43 +111,75 @@ async function displayCategories() {
 
         });
     });
-}
-
-
-function editionPage() {
-
-    const banner = document.createElement(`div`);
-    banner.classList.add("banner");
-
-    const iconBanner = document.createElement(`i`);
-    iconBanner.classList.add("fa-solid", "fa-pen-to-square");
-
-    const editionMode = document.createElement(`span`);
-    editionMode.textContent = "Mode édition";
-
-    const btnModifier = document.createElement(`button`);
-    btnModifier.classList.add("btn-modifier");
-
-    const txtModifier = document.createElement(`span`);
-    txtModifier.textContent = "modifier";
-
-    const iconTxtmodifier = document.createElement(`i`);
-    iconTxtmodifier.classList.add("fa-solid", "fa-pen-to-square");
-
-    banner.appendChild(iconBanner);
-    banner.appendChild(editionMode);
-    document.querySelector("header").appendChild(banner);
-
-    btnModifier.appendChild(iconTxtmodifier);
-    btnModifier.appendChild(txtModifier);
-    document.getElementById("portfolio").appendChild(btnModifier);
 
 }
+
+
+
+function editionMode() {
+
+    if (sessionStorage.getItem('id') && sessionStorage.getItem('token')) {
+
+        const banner = document.createElement(`div`);
+        banner.classList.add("banner");
+
+        const iconBanner = document.createElement(`i`);
+        iconBanner.classList.add("fa-solid", "fa-pen-to-square");
+
+        const txtEdition = document.createElement(`span`);
+        txtEdition.textContent = "Mode édition";
+
+        const logOut = document.createElement(`li`)
+        logOut.textContent = "logout";
+
+        const btnModifier = document.createElement(`button`);
+        btnModifier.classList.add("btn-modifier");
+
+        const txtModifier = document.createElement(`span`);
+        txtModifier.textContent = "modifier";
+
+        const iconTxtmodifier = document.createElement(`i`);
+        iconTxtmodifier.classList.add("fa-solid", "fa-pen-to-square");
+
+
+
+        banner.appendChild(iconBanner);
+        banner.appendChild(txtEdition);
+        document.querySelector("header").appendChild(banner);
+
+        const ulList = document.querySelector("ul");
+        const loginItem = ulList.children[2];
+        ulList.replaceChild(logOut, loginItem); // Remplace "login" par "logout"
+
+        ulList.onclick = () => {
+            sessionStorage.clear();
+            redirectToProjects();
+        };
+
+
+        btnModifier.appendChild(iconTxtmodifier);
+        btnModifier.appendChild(txtModifier);
+        document.getElementById("portfolio").appendChild(btnModifier);
+
+        console.log("editionMode est lancer");
+    }
+}
+
 
 function redirectToLogin() {
     window.location.href = "./login.html";
 }
 
-work()
-displayCategories();
-//editionPage();
+function redirectToProjects() {
+    window.location.href = "./index.html";
+}
+
+
+work();
+
+filtersSelect();
+editionMode();
+
+
+
+
