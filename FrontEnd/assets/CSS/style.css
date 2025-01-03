@@ -366,3 +366,31 @@ footer nav ul {
 	z-index: 10;
 	font-size: 18px;
 }
+
+/***********modal***********/
+
+.modal {
+	position: absolute;
+	background-color: white;
+	width: 630px;
+	height: 688px;
+	top: 580px;
+	left: 1000px;
+	border-radius: 10px;
+	border: 1px solid;
+}
+
+.titre-modal {
+	color: black;
+	font-family: 'Work Sans';
+}
+
+.btn-modal {
+	border-style: none;
+	background-color: #265C3A;
+	color: #FFFFFF;
+	padding: 5px 15px;
+	border-radius: 10px;
+	cursor: pointer;
+	font-size: 16px;
+}

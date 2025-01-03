@@ -1,7 +1,7 @@
 
 //fonction de récupération de l'API (global)
 
-async function work() {
+export async function work() {
 
 
     const response = await fetch("http://localhost:5678/api/works");
@@ -54,11 +54,6 @@ async function filtersSelect() {
     // Récupération des catégories via fetch
     const response = await fetch("http://localhost:5678/api/categories");
     const categories = await response.json();
-
-    if (sessionStorage.getItem('id') && sessionStorage.getItem('token')) {
-        console.log("filtersSelect est bloquée");
-        return;
-    }
 
 
     // Ajout de "Tous" directement
@@ -118,51 +113,49 @@ async function filtersSelect() {
 
 function editionMode() {
 
-    if (sessionStorage.getItem('id') && sessionStorage.getItem('token')) {
-
-        const banner = document.createElement(`div`);
-        banner.classList.add("banner");
-
-        const iconBanner = document.createElement(`i`);
-        iconBanner.classList.add("fa-solid", "fa-pen-to-square");
-
-        const txtEdition = document.createElement(`span`);
-        txtEdition.textContent = "Mode édition";
-
-        const logOut = document.createElement(`li`)
-        logOut.textContent = "logout";
-
-        const btnModifier = document.createElement(`button`);
-        btnModifier.classList.add("btn-modifier");
-
-        const txtModifier = document.createElement(`span`);
-        txtModifier.textContent = "modifier";
-
-        const iconTxtmodifier = document.createElement(`i`);
-        iconTxtmodifier.classList.add("fa-solid", "fa-pen-to-square");
 
 
+    const banner = document.createElement(`div`);
+    banner.classList.add("banner");
 
-        banner.appendChild(iconBanner);
-        banner.appendChild(txtEdition);
-        document.querySelector("header").appendChild(banner);
+    const iconBanner = document.createElement(`i`);
+    iconBanner.classList.add("fa-solid", "fa-pen-to-square");
 
-        const ulList = document.querySelector("ul");
-        const loginItem = ulList.children[2];
-        ulList.replaceChild(logOut, loginItem); // Remplace "login" par "logout"
+    const txtEdition = document.createElement(`span`);
+    txtEdition.textContent = "Mode édition";
 
-        ulList.onclick = () => {
-            sessionStorage.clear();
-            redirectToProjects();
-        };
+    const logOut = document.createElement(`li`)
+    logOut.textContent = "logout";
+
+    const btnModifier = document.createElement(`button`);
+    btnModifier.classList.add("btn-modifier");
+
+    const txtModifier = document.createElement(`span`);
+    txtModifier.textContent = "modifier";
+
+    const iconTxtmodifier = document.createElement(`i`);
+    iconTxtmodifier.classList.add("fa-solid", "fa-pen-to-square");
+
+    banner.appendChild(iconBanner);
+    banner.appendChild(txtEdition);
+    document.querySelector("header").appendChild(banner);
+
+    const ulList = document.querySelector("ul");
+    const loginItem = ulList.children[2];
+    ulList.replaceChild(logOut, loginItem); // Remplace "login" par "logout"
+
+    ulList.onclick = () => {
+        sessionStorage.clear();
+        redirectToProjects();
+    };
 
 
-        btnModifier.appendChild(iconTxtmodifier);
-        btnModifier.appendChild(txtModifier);
-        document.getElementById("portfolio").appendChild(btnModifier);
+    btnModifier.appendChild(iconTxtmodifier);
+    btnModifier.appendChild(txtModifier);
+    document.getElementById("portfolio").appendChild(btnModifier);
 
-        console.log("editionMode est lancer");
-    }
+    console.log("editionMode est lancer");
+
 }
 
 
@@ -177,8 +170,14 @@ function redirectToProjects() {
 
 work();
 
-filtersSelect();
-editionMode();
+
+
+
+if (sessionStorage.getItem('id') && sessionStorage.getItem('token')) {
+    editionMode();
+} else {
+    filtersSelect();
+}
 
 
 
