@@ -13,7 +13,7 @@
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/CSS/style.css">
 	<script type="module" src="./assets/js/script.js" defer></script>
-
+	<script src="./assets/js/login.js" defer></script>
 </head>
 
 <body>
@@ -23,7 +23,7 @@
 			<ul>
 				<li>projets</li>
 				<li>contact</li>
-				<li onclick="redirectToLogin()">login</li>
+				<li><a id="login">login</a></li>
 				<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 			</ul>
 		</nav>
@@ -61,16 +61,6 @@
 				<input type="submit" value="Envoyer">
 			</form>
 		</section>
-
-		<!--<aside id="modal1" class="modal" aria-hidden="true">
-			<div class="modal-wrapper">
-				<h2 class="titre-modal">galerie photo</h2>
-
-				<button class="btn-modal">
-					<span>Ajouter une photo</span>
-				</button>
-		</div>
-		</aside>-->
 	</main>
 	<footer>
 		<nav>
@@ -81,5 +71,19 @@
 		</nav>
 	</footer>
 </body>
+
+<div id="modal-background"></div>
+
+<aside id="modal1" aria-hidden="true">
+	<button class="btn-close">
+		<i class="fa-solid fa-xmark"></i>
+	</button>
+	<div class="modal-contener">
+		<h2 class="titre-modal">Galerie photo</h2>
+	</div>
+	<button class="btn-modal">
+		<span>Ajouter une photo</span>
+	</button>
+</aside>
 
 </html>

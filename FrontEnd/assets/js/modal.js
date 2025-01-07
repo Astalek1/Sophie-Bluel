@@ -1,1 +1,2 @@
-import { work } from "./script";
+import { work } from "./script.js";
+

@@ -1,8 +1,6 @@
 
 //fonction de récupération de l'API (global)
-
 export async function work() {
-
 
     const response = await fetch("http://localhost:5678/api/works");
     const works = await response.json();
@@ -45,8 +43,8 @@ export async function work() {
     });
 
     portfolioSection.appendChild(gallery);
-}
 
+}
 // .................mise en place  des filtres......................................//
 async function filtersSelect() {
 
@@ -87,7 +85,6 @@ async function filtersSelect() {
 
 
     filterButtons.forEach(button => {
-
         button.addEventListener("click", (event) => {
             const galleryItems = document.querySelectorAll(".gallery figure")
             const selectedFilterId = event.target.dataset.filterId; // Récupère l'ID du filtre sélectionné
@@ -109,11 +106,7 @@ async function filtersSelect() {
 
 }
 
-
-
 function editionMode() {
-
-
 
     const banner = document.createElement(`div`);
     banner.classList.add("banner");
@@ -143,40 +136,61 @@ function editionMode() {
     const ulList = document.querySelector("ul");
     const loginItem = ulList.children[2];
     ulList.replaceChild(logOut, loginItem); // Remplace "login" par "logout"
-
-    ulList.onclick = () => {
-        sessionStorage.clear();
-        redirectToProjects();
-    };
-
+    logOut.id = "logout";
 
     btnModifier.appendChild(iconTxtmodifier);
     btnModifier.appendChild(txtModifier);
     document.getElementById("portfolio").appendChild(btnModifier);
 
-    console.log("editionMode est lancer");
 
+    /************fonction d'avctivatiuonde la modal**********/
+
+    const modal1 = document.getElementById("modal1");
+    const modalBackground = document.getElementById("modal-background");
+    const closeModal = document.querySelector(".btn-close");
+
+    if (btnModifier) {
+        btnModifier.addEventListener("click", () => {
+            modalBackground.style.display = "block";
+            modal1.style.display = "block";
+        });
+    };
+    if (closeModal) {
+        closeModal.addEventListener("click", () => {
+            modalBackground.style.display = "none";
+            modal1.style.display = "none";
+        });
+    };
+    if (modalBackground) {
+        modalBackground.addEventListener("click", () => {
+            modalBackground.style.display = "none";
+            modal1.style.display = "none";
+        });
+    };
 }
 
 
-function redirectToLogin() {
-    window.location.href = "./login.html";
-}
+// a voir si je peu la laisser comme ca?
+function login() {
+    document.addEventListener("DOMContentLoaded", () => {
+        const loginLink = document.getElementById("login");
 
-function redirectToProjects() {
-    window.location.href = "./index.html";
-}
-
+        if (loginLink) {
+            loginLink.addEventListener("click", () => {
+                window.location.href = "./login.html";
+            });
+        }
+    })
+};
 
 work();
 
-
-
-
-if (sessionStorage.getItem('id') && sessionStorage.getItem('token')) {
+if (sessionStorage.getItem('token')) {
     editionMode();
+
 } else {
     filtersSelect();
+    login();
 }
 
 

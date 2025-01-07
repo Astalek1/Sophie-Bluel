@@ -1,3 +1,4 @@
+
 const loginForm = document.querySelector("form");
 
 loginForm.addEventListener('submit', async function (event) {
@@ -21,9 +22,8 @@ async function loginValidation(email, password) {
 
         const data = await response.json();
 
-        if (data.userId && data.token) {
+        if (data.token) {
             console.log("login valide")
-            sessionStorage.setItem("id", data.userId);
             sessionStorage.setItem("token", data.token);
             console.log(sessionStorage);
             //retour vers la page projet en activant le mode administateur.
@@ -51,8 +51,37 @@ async function loginValidation(email, password) {
     } catch (error) {
         console.error("Une erreur est survenue :", error.message);
     }
-}
+};
 
-function redirectToProjects() {
-    window.location.href = "./index.html";
-}
+function logout() {
+    document.addEventListener("DOMContentLoaded", () => {
+        const logout = document.getElementById("logout");
+
+        if (logout) {
+            logout.addEventListener("click", () => {
+                sessionStorage.removeItem("token")
+                window.location.href = "./index.html";
+            });
+        }
+
+    })
+};
+
+
+function projects() {
+    document.addEventListener("DOMContentLoaded", () => {
+        const projects = document.getElementById("projects");
+
+        if (projects) {
+            projects.addEventListener("click", () => {
+                window.location.href = "./index.html";
+            });
+        }
+
+    })
+};
+
+logout();
+projects();
+
+
