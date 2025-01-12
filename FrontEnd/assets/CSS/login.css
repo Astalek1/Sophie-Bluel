@@ -206,6 +206,15 @@ li:hover {
     color: #B1663C;
 }
 
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    color: #B1663C;
+}
+
 main {
     flex: 1;
     display: flex;

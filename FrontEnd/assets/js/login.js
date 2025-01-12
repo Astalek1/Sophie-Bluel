@@ -53,35 +53,5 @@ async function loginValidation(email, password) {
     }
 };
 
-function logout() {
-    document.addEventListener("DOMContentLoaded", () => {
-        const logout = document.getElementById("logout");
-
-        if (logout) {
-            logout.addEventListener("click", () => {
-                sessionStorage.removeItem("token")
-                window.location.href = "./index.html";
-            });
-        }
-
-    })
-};
-
-
-function projects() {
-    document.addEventListener("DOMContentLoaded", () => {
-        const projects = document.getElementById("projects");
-
-        if (projects) {
-            projects.addEventListener("click", () => {
-                window.location.href = "./index.html";
-            });
-        }
-
-    })
-};
-
-logout();
-projects();
 
 

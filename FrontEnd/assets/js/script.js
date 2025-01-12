@@ -1,51 +1,50 @@
 
-//fonction de récupération de l'API (global)
-export async function work() {
+import { openModal } from './modal.js';
 
+export async function getWorksApi() {
     const response = await fetch("http://localhost:5678/api/works");
     const works = await response.json();
 
-    //........................fonction de récupération de la gallery.............................//
-
-    //pour ciblé la section portfolio
-    const portfolioSection = document.getElementById("portfolio");
-
-    //création de la div gallery
-    const gallery = document.createElement(`div`);
-    gallery.classList.add("gallery");
-
-    // Parcourt les données pour créer les éléments HTML
-    works.forEach(item => {
-
-        // éléments créé
-        const figure = document.createElement(`figure`);
-
-        // Ajout de l'ID de la catégorie
-        figure.dataset.categoryId = item.categoryId;
-
-        const img = document.createElement(`img`);
-        const figcaption = document.createElement(`figcaption`);
-
-        // Remplissage des attributs et contenus
-        img.src = item.imageUrl;
-        img.alt = item.title;
-        figcaption.textContent = item.title;
-
-        // Ajoute la catégorie pour le filtrage
-        figure.dataset.category = item.category.name
-
-        // structure
-        figure.appendChild(img);
-        figure.appendChild(figcaption);
-
-
-        gallery.appendChild(figure);
-    });
-
-    portfolioSection.appendChild(gallery);
-
+    return works;
 }
-// .................mise en place  des filtres......................................//
+
+
+export async function createGallery() {
+    const container = document.getElementById("portfolio")
+    try {
+        // Récupère les works depuis l'API
+        const works = await getWorksApi();
+
+        // Vérifie si le conteneur existe
+        if (!container) {
+            console.error("Le conteneur spécifié est introuvable !");
+            return;
+        }
+
+        // Parcourt les données pour créer les éléments HTML
+        works.forEach(item => {
+            const figure = document.createElement('figure');
+            figure.dataset.categoryId = item.categoryId;
+
+            const img = document.createElement('img');
+            img.src = item.imageUrl;
+            img.alt = item.title;
+
+            const figcaption = document.createElement('figcaption');
+            figcaption.textContent = item.title;
+
+            figure.appendChild(img);
+            figure.appendChild(figcaption);
+            container.appendChild(figure); // Ajoute la galerie au conteneur spécifié
+        });
+
+        return works;
+    } catch (error) {
+        console.error("erreur lors de la création de la galerie : ", error);
+    }
+}
+
+//...............mise en place  des filtres......................................
 async function filtersSelect() {
 
 
@@ -55,7 +54,7 @@ async function filtersSelect() {
 
 
     // Ajout de "Tous" directement
-    const categoriesList = [{ id: 0, name: "Tous", }, ...categories];
+    const categoriesList = [{ id: 0, name: "Tous" }, ...categories];
     // Création du conteneur pour les filtres
     const filterContainer = document.createElement("div");
     filterContainer.classList.add("filters");
@@ -71,7 +70,8 @@ async function filtersSelect() {
 
     // Ajoute les filtres à la section portfolio
     const portfolioSection = document.getElementById("portfolio");
-    portfolioSection.insertBefore(filterContainer, portfolioSection.querySelector(".gallery"));
+    const galleryElement = portfolioSection.querySelector("gallery")
+    portfolioSection.insertBefore(filterContainer, galleryElement);
 
     // le boutton Tous est vert au chargement de la page.
     const filterTous = document.querySelector('[data-filter-id= "0"]');
@@ -81,13 +81,11 @@ async function filtersSelect() {
     // Ajouter les événements de clic pour chaque bouton
     const filterButtons = document.querySelectorAll(".filter-button");
 
-
-
-
     filterButtons.forEach(button => {
         button.addEventListener("click", (event) => {
-            const galleryItems = document.querySelectorAll(".gallery figure")
+            const galleryItems = document.querySelectorAll("figure");
             const selectedFilterId = event.target.dataset.filterId; // Récupère l'ID du filtre sélectionné
+
             // Ajoute une classe "active" au bouton cliqué
             filterButtons.forEach(btn => btn.classList.remove("active"));
             event.target.classList.add("active");
@@ -95,7 +93,7 @@ async function filtersSelect() {
             // Filtre les éléments de la galerie
             galleryItems.forEach(item => {
                 if (selectedFilterId === "0" || item.dataset.categoryId === selectedFilterId) {
-                    item.style.display = "block";
+                    item.style.display = "inline-block";
                 } else {
                     item.style.display = "none";
                 }
@@ -117,9 +115,6 @@ function editionMode() {
     const txtEdition = document.createElement(`span`);
     txtEdition.textContent = "Mode édition";
 
-    const logOut = document.createElement(`li`)
-    logOut.textContent = "logout";
-
     const btnModifier = document.createElement(`button`);
     btnModifier.classList.add("btn-modifier");
 
@@ -133,66 +128,31 @@ function editionMode() {
     banner.appendChild(txtEdition);
     document.querySelector("header").appendChild(banner);
 
-    const ulList = document.querySelector("ul");
-    const loginItem = ulList.children[2];
-    ulList.replaceChild(logOut, loginItem); // Remplace "login" par "logout"
-    logOut.id = "logout";
+    const linkLogin = document.querySelector("ul a");
+    linkLogin.textContent = "Logout";
+    linkLogin.onclick = (event) => {
+        event.preventDefault();
+        sessionStorage.removeItem("token");
+        window.location.href = "./index.html";
+    };
+
 
     btnModifier.appendChild(iconTxtmodifier);
     btnModifier.appendChild(txtModifier);
     document.getElementById("portfolio").appendChild(btnModifier);
 
 
-    /************fonction d'avctivatiuonde la modal**********/
-
-    const modal1 = document.getElementById("modal1");
-    const modalBackground = document.getElementById("modal-background");
-    const closeModal = document.querySelector(".btn-close");
-
-    if (btnModifier) {
-        btnModifier.addEventListener("click", () => {
-            modalBackground.style.display = "block";
-            modal1.style.display = "block";
-        });
-    };
-    if (closeModal) {
-        closeModal.addEventListener("click", () => {
-            modalBackground.style.display = "none";
-            modal1.style.display = "none";
-        });
-    };
-    if (modalBackground) {
-        modalBackground.addEventListener("click", () => {
-            modalBackground.style.display = "none";
-            modal1.style.display = "none";
-        });
-    };
 }
 
+getWorksApi();
 
-// a voir si je peu la laisser comme ca?
-function login() {
-    document.addEventListener("DOMContentLoaded", () => {
-        const loginLink = document.getElementById("login");
-
-        if (loginLink) {
-            loginLink.addEventListener("click", () => {
-                window.location.href = "./login.html";
-            });
-        }
-    })
-};
-
-work();
 
 if (sessionStorage.getItem('token')) {
+    createGallery();
     editionMode();
+    openModal();
 
 } else {
-    filtersSelect();
-    login();
+    await filtersSelect();
+    createGallery();
 }
-
-
-
-
