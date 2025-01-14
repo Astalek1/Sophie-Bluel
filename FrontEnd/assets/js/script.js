@@ -136,12 +136,9 @@ function editionMode() {
         window.location.href = "./index.html";
     };
 
-
     btnModifier.appendChild(iconTxtmodifier);
     btnModifier.appendChild(txtModifier);
     document.getElementById("portfolio").appendChild(btnModifier);
-
-
 }
 
 getWorksApi();
