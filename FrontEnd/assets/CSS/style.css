@@ -675,3 +675,13 @@ figure i.fa-trash:hover {
 .btn-valider:hover {
 	background-color: #1D6154;
 }
+
+#error-message {
+	position: absolute;
+	right: 235px;
+	color: red;
+	text-align: center;
+	margin: 20px 0;
+	font-size: 20px;
+	display: none;
+}

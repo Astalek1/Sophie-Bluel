@@ -1,4 +1,4 @@
-import { getWorksApi, } from "./script.js";
+import { getWorksApi, createGallery } from "./script.js";
 
 export async function modalGallery() {
 
@@ -40,8 +40,42 @@ export async function modalGallery() {
             modalContainer.appendChild(figure);
 
             // Event listener pour la suppression
-            deleteIcon.addEventListener('click', () => {
-                console.log(`Suppression en attente pour l'élément avec ID : ${figure.dataset.id}`);
+            deleteIcon.addEventListener('click', async () => {
+                //console.log(`Suppression en attente pour l'élément avec ID : ${figure.dataset.id}`);
+                try {
+                    const token = sessionStorage.getItem('token');
+                    const response = await fetch(`http://localhost:5678/api/works/${figure.dataset.id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Erreur lors de la suppression');
+                    }
+
+
+                    // Mettre à jour la galerie principale
+                    const galleryContainer = document.querySelector(".gallery");
+                    galleryContainer.innerHTML = '';  // Vider d'abord
+                    await createGallery();    // Mise à jour de la galerie principale
+
+
+                    // Mettre à jour la galerie principale
+                    const modalContainer = document.querySelector(".modal-container");
+                    modalContainer.innerHTML = '';  // Vider d'abord
+                    await modalGallery();     // Mise à jour de la galerie modale
+
+                    // Fermer la modale après les mises à jour
+                    resetModal();
+                    modal2.style.display = "none";
+                    modalBackground.style.display = "none";
+
+
+                } catch (error) {
+                    console.error("Erreur lors de la suppression:", error);
+                }
             });
         });
     } catch (error) {
@@ -86,7 +120,7 @@ export function openModal() {
     /************close Modal**************/
 }
 
-function closeModaleGeneral() {
+function closeModalGeneral() {
     const modalBackground = document.getElementById("modal-background");
     const closeModal = document.querySelector(".btn-close");
     const closeModal2 = document.querySelector(".btn-close2");
@@ -184,6 +218,7 @@ function resetModal() {
     const fileInput = document.querySelector('.select-images input[type="file"]');
     const imageContainer = document.querySelector(".select-images");
     const uploadedImage = imageContainer.querySelector('img');
+    const errorMessage = document.getElementById("error-message");
 
     if (uploadedImage) {
         uploadedImage.remove()
@@ -206,9 +241,108 @@ function resetModal() {
     if (categorySelect) {
         categorySelect.selectedIndex = 0;
     }
+    if (errorMessage) {
+        errorMessage.style.display = "none";
+        errorMessage.textContent = "";
+    }
 }
 
+/************* validation de la modale**************/
 
-closeModaleGeneral();
+
+
+function validateModal() {
+    const fileInput = document.querySelector('.select-images input[type="file"]');
+    const imgName = document.getElementById("img-name");
+    const categories = document.getElementById("Catégories");
+    const btnValider = document.querySelector(".btn-valider");
+    const errorMessage = document.getElementById("error-message");
+    const modal2 = document.getElementById("modal2");
+    const modalBackground = document.getElementById("modal-background");
+
+    function verifyInputs() {
+        return fileInput.files.length > 0 &&
+            imgName.value.trim() !== "" &&
+            categories.value !== "";
+    }
+
+    btnValider.addEventListener("click", async (event) => {
+        event.preventDefault();
+
+        if (!verifyInputs()) {
+            errorMessage.textContent = "Veuillez remplir tous les champs";
+            errorMessage.style.display = "block";
+            return;
+        }
+        errorMessage.style.display = "none";
+        console.log("Formulaire valide");
+
+        try {
+            const formData = new FormData();
+            formData.append('image', fileInput.files[0]);
+            formData.append('title', imgName.value);
+            formData.append('category', categories.value);
+
+            const token = sessionStorage.getItem('token');
+            const response = await fetch('http://localhost:5678/api/works', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error("Erreur lors de l'envoi");
+            }
+
+            const updatedWorks = await getWorksApi();
+            const container = document.getElementById("portfolio"); // Même sélecteur que createGallery
+            if (container) {
+                // Vider seulement les figures existantes
+                const existingFigures = container.querySelectorAll('figure');
+                existingFigures.forEach(figure => figure.remove());
+
+                // Ajouter les nouvelles figures
+                updatedWorks.forEach(item => {
+                    const figure = document.createElement('figure');
+                    figure.dataset.categoryId = item.categoryId;
+
+                    const img = document.createElement('img');
+                    img.src = item.imageUrl;
+                    img.alt = item.title;
+
+                    const figcaption = document.createElement('figcaption');
+                    figcaption.textContent = item.title;
+
+                    figure.appendChild(img);
+                    figure.appendChild(figcaption);
+                    container.appendChild(figure);
+                });
+            }
+
+
+            // Fermeture et réinitialisation de la modale
+            resetModal();
+            modal2.style.display = "none";
+            modalBackground.style.display = "block";
+
+            // Mise à jour de la galerie modale
+            const modalContainer = document.querySelector('.modal-container');
+            if (modalContainer) {
+                modalContainer.innerHTML = '';
+                await modalGallery();
+            }
+
+        } catch (error) {
+            console.error("Erreur:", error);
+            errorMessage.textContent = "Erreur lors de l'envoi";
+            errorMessage.style.display = "block";
+        }
+    });
+}
+
+closeModalGeneral();
 imageModification();
 catégoriesApi();
+validateModal();
