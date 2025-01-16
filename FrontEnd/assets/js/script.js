@@ -10,7 +10,9 @@ export async function getWorksApi() {
 
 
 export async function createGallery() {
-    const container = document.getElementById("portfolio")
+    const container = document.getElementById("gallery")
+    container.innerHTML = '';
+
     try {
         // Récupère les works depuis l'API
         const works = await getWorksApi();
@@ -70,7 +72,7 @@ async function filtersSelect() {
 
     // Ajoute les filtres à la section portfolio
     const portfolioSection = document.getElementById("portfolio");
-    const galleryElement = portfolioSection.querySelector("gallery")
+    const galleryElement = document.getElementById("gallery")
     portfolioSection.insertBefore(filterContainer, galleryElement);
 
     // le boutton Tous est vert au chargement de la page.
@@ -138,7 +140,9 @@ function editionMode() {
 
     btnModifier.appendChild(iconTxtmodifier);
     btnModifier.appendChild(txtModifier);
-    document.getElementById("portfolio").appendChild(btnModifier);
+    const portfolioSection = document.getElementById("portfolio")
+    const gallery = document.getElementById("gallery");
+    portfolioSection.insertBefore(btnModifier, gallery);
 }
 
 getWorksApi();

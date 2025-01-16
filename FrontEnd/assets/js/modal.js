@@ -39,9 +39,8 @@ export async function modalGallery() {
             // Ajouter au conteneur modal
             modalContainer.appendChild(figure);
 
-            // Event listener pour la suppression
+            // logique supression de limage
             deleteIcon.addEventListener('click', async () => {
-                //console.log(`Suppression en attente pour l'élément avec ID : ${figure.dataset.id}`);
                 try {
                     const token = sessionStorage.getItem('token');
                     const response = await fetch(`http://localhost:5678/api/works/${figure.dataset.id}`, {
@@ -57,20 +56,18 @@ export async function modalGallery() {
 
 
                     // Mettre à jour la galerie principale
-                    const galleryContainer = document.querySelector(".gallery");
-                    galleryContainer.innerHTML = '';  // Vider d'abord
-                    await createGallery();    // Mise à jour de la galerie principale
+                    await createGallery()
 
 
-                    // Mettre à jour la galerie principale
+                    // // Mettre à jour la galerie de la modale
                     const modalContainer = document.querySelector(".modal-container");
-                    modalContainer.innerHTML = '';  // Vider d'abord
-                    await modalGallery();     // Mise à jour de la galerie modale
+                    modalContainer.innerHTML = '';
+                    await modalGallery();
 
-                    // Fermer la modale après les mises à jour
+                    // // // Fermer la modale après les mises à jour
                     resetModal();
                     modal2.style.display = "none";
-                    modalBackground.style.display = "none";
+
 
 
                 } catch (error) {
@@ -82,6 +79,7 @@ export async function modalGallery() {
         console.error("Erreur lors du chargement de la galerie modale:", error);
     };
 }
+
 /************fonction d'avctivatiuon de la modal**********/
 
 export function openModal() {
@@ -181,8 +179,8 @@ function imageModification() {
             alert("Veuillez sélectionner une image");
             return;
         }
-        if (file.size > 8 * 1024 * 1024) {
-            alert("L'image ne doit pas dépasser 8Mo");
+        if (file.size > 4 * 1024 * 1024) {
+            alert("L'image ne doit pas dépasser 4Mo");
             return;
         }
 
@@ -196,7 +194,7 @@ function imageModification() {
 /************recuperation des catégories*************/
 
 
-async function catégoriesApi() {
+async function categoriesApi() {
     const response = await fetch('http://localhost:5678/api/categories');
     const categories = await response.json();
 
@@ -296,31 +294,7 @@ function validateModal() {
                 throw new Error("Erreur lors de l'envoi");
             }
 
-            const updatedWorks = await getWorksApi();
-            const container = document.getElementById("portfolio"); // Même sélecteur que createGallery
-            if (container) {
-                // Vider seulement les figures existantes
-                const existingFigures = container.querySelectorAll('figure');
-                existingFigures.forEach(figure => figure.remove());
-
-                // Ajouter les nouvelles figures
-                updatedWorks.forEach(item => {
-                    const figure = document.createElement('figure');
-                    figure.dataset.categoryId = item.categoryId;
-
-                    const img = document.createElement('img');
-                    img.src = item.imageUrl;
-                    img.alt = item.title;
-
-                    const figcaption = document.createElement('figcaption');
-                    figcaption.textContent = item.title;
-
-                    figure.appendChild(img);
-                    figure.appendChild(figcaption);
-                    container.appendChild(figure);
-                });
-            }
-
+            await createGallery();
 
             // Fermeture et réinitialisation de la modale
             resetModal();
@@ -344,5 +318,5 @@ function validateModal() {
 
 closeModalGeneral();
 imageModification();
-catégoriesApi();
+categoriesApi();
 validateModal();
