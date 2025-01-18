@@ -109,7 +109,8 @@ export function openModal() {
     }
 
     if (BackModal) {
-        BackModal.addEventListener("click", () => {
+        BackModal.addEventListener("click", (event) => {
+            event.preventDefault();
             modal2.style.display = "none";
             resetModal();
         })
@@ -132,7 +133,8 @@ function closeModalGeneral() {
 
     if (closeModal2) {
         try {
-            closeModal2.addEventListener("click", () => {
+            closeModal2.addEventListener("click", (event) => {
+                event.preventDefault();
                 modalBackground.style.display = "none";
                 modal1.style.display = "none";
                 modal2.style.display = "none";
@@ -160,8 +162,10 @@ function imageModification() {
     const fileInput = document.querySelector('.select-images input[type="file"]');
     const imageContainer = document.querySelector(".select-images");
     const imageIcon = document.querySelector(".select-images i");
+    const ajouterDiv = document.querySelector('.select-images .ajouter');
 
-    function handleImageDisplay(event) {
+
+    function visualisationImage(event) {
         const img = document.createElement('img');
         img.src = event.target.result;
 
@@ -183,10 +187,15 @@ function imageModification() {
             alert("L'image ne doit pas dépasser 4Mo");
             return;
         }
-
         const reader = new FileReader();
-        reader.onload = handleImageDisplay;
+        reader.onload = visualisationImage;
         reader.readAsDataURL(file);
+
+        if (file) {// Désactive la div .ajouter
+            ajouterDiv.style.pointerEvents = "none";
+            ajouterDiv.style.opacity = "0";
+        }
+
     });
 };
 
@@ -217,6 +226,7 @@ function resetModal() {
     const imageContainer = document.querySelector(".select-images");
     const uploadedImage = imageContainer.querySelector('img');
     const errorMessage = document.getElementById("error-message");
+    const ajouterDiv = document.querySelector(".select-images .ajouter");
 
     if (uploadedImage) {
         uploadedImage.remove()
@@ -226,6 +236,12 @@ function resetModal() {
     }
     if (fileInput) {
         fileInput.value = "";
+    }
+
+    // Réinitialisation de la div ajouter
+    if (ajouterDiv) {
+        ajouterDiv.style.pointerEvents = "auto";
+        ajouterDiv.style.opacity = "1";
     }
 
     // Réinitialisation du titre
@@ -245,24 +261,26 @@ function resetModal() {
     }
 }
 
-/************* validation de la modale**************/
 
+function verifyInputs() {
+    const fileInput = document.querySelector('.select-images input[type="file"]');
+    const projectName = document.getElementById("img-name");
+    const categories = document.getElementById("Catégories");
 
+    return fileInput.files.length > 0 &&
+        projectName.value.trim() !== "" &&
+        categories.value !== "";
+}
 
 function validateModal() {
     const fileInput = document.querySelector('.select-images input[type="file"]');
-    const imgName = document.getElementById("img-name");
+    const projectName = document.getElementById("img-name");
     const categories = document.getElementById("Catégories");
     const btnValider = document.querySelector(".btn-valider");
     const errorMessage = document.getElementById("error-message");
     const modal2 = document.getElementById("modal2");
     const modalBackground = document.getElementById("modal-background");
 
-    function verifyInputs() {
-        return fileInput.files.length > 0 &&
-            imgName.value.trim() !== "" &&
-            categories.value !== "";
-    }
 
     btnValider.addEventListener("click", async (event) => {
         event.preventDefault();
@@ -274,11 +292,10 @@ function validateModal() {
         }
         errorMessage.style.display = "none";
         console.log("Formulaire valide");
-
         try {
             const formData = new FormData();
             formData.append('image', fileInput.files[0]);
-            formData.append('title', imgName.value);
+            formData.append('title', projectName.value);
             formData.append('category', categories.value);
 
             const token = sessionStorage.getItem('token');
@@ -314,9 +331,27 @@ function validateModal() {
             errorMessage.style.display = "block";
         }
     });
+
+    function toggleButtonState() {
+        if (verifyInputs()) {
+            btnValider.classList.add("btn-valider-active");
+        } else {
+            btnValider.classList.remove("btn-valider-active");
+        }
+
+        fileInput.addEventListener("change", toggleButtonState);
+        projectName.addEventListener("input", toggleButtonState);
+        categories.addEventListener("change", toggleButtonState);
+    }
+
+    // Initialisation de l'état du bouton
+    toggleButtonState();
+
+
 }
 
 closeModalGeneral();
 imageModification();
 categoriesApi();
 validateModal();
+

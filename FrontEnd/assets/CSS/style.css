@@ -517,7 +517,7 @@ figure i.fa-trash:hover {
 #modal2 {
 	display: none;
 	position: relative;
-	bottom: 3500px;
+	bottom: 3550px;
 	left: 52%;
 	transform: translate(-50%, -50%);
 	background-color: white;
@@ -670,11 +670,12 @@ figure i.fa-trash:hover {
 	bottom: 55px;
 	left: 50%;
 	transform: translateX(-50%);
-	cursor: pointer;
+
 }
 
-.btn-valider:hover {
-	background-color: #1D6154;
+.btn-valider-active {
+	background-color: #265C3A;
+	cursor: pointer;
 }
 
 #error-message {

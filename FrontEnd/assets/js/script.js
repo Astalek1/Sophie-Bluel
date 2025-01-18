@@ -133,8 +133,8 @@ function editionMode() {
     const linkLogin = document.querySelector("ul a");
     linkLogin.textContent = "Logout";
     linkLogin.onclick = (event) => {
-        event.preventDefault();
         sessionStorage.removeItem("token");
+        event.preventDefault();
         window.location.href = "./index.html";
     };
 

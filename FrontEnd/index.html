@@ -29,7 +29,7 @@
 		</nav>
 	</header>
 	<main>
-		<section id="introduction">
+		<div id="introduction">
 			<div>
 				<img src="./assets/images/sophie-bluel.png" alt="">
 			</div>
@@ -43,7 +43,7 @@
 				<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG,
 					décorateur(trice)</p>
 			</article>
-		</section>
+		</div>
 		<section id="portfolio">
 			<h2>Mes Projets</h2>
 			<div id="gallery"></div>
@@ -86,38 +86,39 @@
 	</aside>
 
 
-	<aside id="modal2" aria-hidden="true">
-		<section class="navigation">
-			<button class="retour">
-				<i class="fa-solid fa-arrow-left"></i>
-			</button>
-			<button class="btn-close2">
-				<i class="fa-solid fa-xmark"></i>
-			</button>
-		</section>
-		<h2 class="titre-modal2">Ajout photo</h2>
-		<section class="section-modal2">
-			<form class="select-images">
-				<i class="fa-regular fa-image"></i>
-				<div class="ajouter">
-					<input type="file" name="file">
-					<p>+ Ajouter photo</p>
+	<section id="modal2" aria-hidden="true">
+		<form>
+			<div class="navigation">
+				<button class="retour">
+					<i class="fa-solid fa-arrow-left"></i>
+				</button>
+				<button class="btn-close2">
+					<i class="fa-solid fa-xmark"></i>
+				</button>
+			</div>
+			<h2 class="titre-modal2">Ajout photo</h2>
+			<div class="section-modal2">
+				<div class="select-images">
+					<i class="fa-regular fa-image"></i>
+					<div class="ajouter">
+						<input type="file" name="file">
+						<p>+ Ajouter photo</p>
+					</div>
+					<p>jpg, png : 4mo max</p>
 				</div>
-				<p>jpg, png : 4mo max</p>
-			</form>
-			<form class="contener-select">
-				<label for="name">titre</label>
-				<input type="text" name="name" id="img-name">
-				<label for="name">Catégorie</label>
-				<select name="Catégorie" id="Catégories"></select>
-			</form>
-			<p id="error-message"></p>
-		</section>
-		<button class="btn-valider">
-			<span>valider</span>
-		</button>
-
-	</aside>
+				<div class="contener-select">
+					<label for="name">titre</label>
+					<input type="text" name="name" id="img-name">
+					<label for="name">Catégorie</label>
+					<select name="Catégorie" id="Catégories"></select>
+				</div>
+				<p id="error-message"></p>
+			</div>
+			<button class="btn-valider">
+				<span>valider</span>
+			</button>
+		</form>
+	</section>
 </body>
 
 </html>
