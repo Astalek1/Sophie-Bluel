@@ -272,6 +272,9 @@ function verifyInputs() {
         categories.value !== "";
 }
 
+
+
+
 function validateModal() {
     const fileInput = document.querySelector('.select-images input[type="file"]');
     const projectName = document.getElementById("img-name");
