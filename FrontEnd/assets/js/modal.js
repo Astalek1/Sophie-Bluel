@@ -109,9 +109,9 @@ export function openModal() {
             modal1.style.display = "block";
         })
     }
-
-    /************close Modal**************/
 }
+
+/************close Modal**************/
 
 function closeModalGeneral() {
     const modalBackground = document.getElementById("modal-background");

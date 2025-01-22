@@ -13,7 +13,6 @@ export async function createGallery() {
     const container = document.getElementById("gallery")
     container.innerHTML = '';
 
-
     // Récupère les works depuis l'API
     const works = await getWorksApi();
 
@@ -41,7 +40,6 @@ export async function createGallery() {
     });
 
     return works;
-
 }
 
 //...............mise en place  des filtres......................................
@@ -145,7 +143,6 @@ function editionMode() {
 }
 
 getWorksApi();
-
 
 if (sessionStorage.getItem('token')) {
     createGallery();
