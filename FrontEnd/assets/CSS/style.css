@@ -272,6 +272,7 @@ a:hover {
 #contact {
 	width: 50%;
 	margin: auto;
+	margin-bottom: 50px;
 }
 
 #contact>* {
@@ -315,23 +316,26 @@ input[type="submit"] {
 	width: 180px;
 	text-align: center;
 	border-radius: 60px;
+	cursor: pointer;
 }
 
 footer {
-	width: 250%;
-	background-color: white;
-	height: 75px;
-	position: relative;
-	left: -75%
+	width: 100%;
+	height: 80px;
+	background-color: #FFFFFF;
+	position: absolute;
+	left: 0;
 }
 
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
 	margin: 2em;
-	padding-top: 22px;
+	padding-top: 10px;
 	padding-right: 25%;
 }
+
+
 
 /* création des bouttons */
 
@@ -389,8 +393,12 @@ footer nav ul {
 	bottom: 3.1em;
 	font-size: 18px;
 	display: block;
-
 }
+
+.btn-modifier:hover {
+	color: #B1663C
+}
+
 
 /*********** modal 1 ***********/
 
@@ -409,16 +417,15 @@ footer nav ul {
 #modal1 {
 	display: none;
 	position: fixed;
-	bottom: 20%;
-	left: 38%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 	background-color: white;
 	width: 800px;
-	height: 1000px;
+	height: 900px;
 	border-radius: 10px;
 	border: 1px solid;
 	z-index: 1000;
-	isolation: isolate;
-
 }
 
 .btn-close {
@@ -432,7 +439,7 @@ footer nav ul {
 
 .modal-container {
 	border-bottom: 1px solid black;
-	width: 75%;
+	width: 70%;
 	height: auto;
 	display: grid;
 	grid-template-columns: repeat(5, 1fr);
@@ -441,7 +448,9 @@ footer nav ul {
 	padding: 20px;
 	margin: auto;
 	margin-top: 50px;
+	padding-bottom: 50px;
 	row-gap: 40px;
+
 }
 
 
@@ -462,12 +471,16 @@ footer nav ul {
 	border-style: none;
 	background-color: #265C3A;
 	color: #FFFFFF;
-	padding: 10px 50px;
+	padding: 13px 70px;
 	border-radius: 30px;
 	cursor: pointer;
-	font-size: 16px;
-	margin-top: 6%;
-	margin-left: 36%;
+	margin-top: 7%;
+	margin-left: 29%;
+}
+
+.btn-modal span {
+	font-family: 'syne';
+	font-size: 20px;
 }
 
 
@@ -524,17 +537,17 @@ figure i.fa-trash:hover {
 #modal2 {
 	display: none;
 	position: fixed;
-	bottom: -13.7%;
-	left: 50.5%;
+	top: 47.3%;
+	left: 50%;
 	transform: translate(-50%, -50%);
 	background-color: white;
 	width: 800px;
-	height: 1000px;
+	height: 900px;
 	border-radius: 10px;
-	border: 1px solid black;
-	z-index: 1500;
-}
+	border: 1px solid;
+	z-index: 1100;
 
+}
 
 /* Titre */
 .titre-modal2 {
@@ -579,7 +592,7 @@ figure i.fa-trash:hover {
 .section-modal2 {
 	width: 500px;
 	margin: auto;
-	padding-bottom: 100px;
+	padding-bottom: 30px;
 	border-bottom: 1px solid black;
 }
 
@@ -600,7 +613,7 @@ figure i.fa-trash:hover {
 
 .select-images i {
 	color: #B9C5CC;
-	font-size: 58px;
+	font-size: 90px;
 	margin-bottom: 6px;
 }
 
@@ -617,12 +630,15 @@ figure i.fa-trash:hover {
 .ajouter {
 	background-color: #CBD6DC;
 	border-radius: 50px;
-	padding: 10px 33px;
+	padding: 13px 40px;
 	border: none;
-	color: #306685;
 	cursor: pointer;
 	position: relative;
-	margin: 7px 0;
+}
+
+.ajouter p {
+	font-size: 20px !important;
+	color: #306685 !important;
 }
 
 .ajouter input[type="file"] {
@@ -637,7 +653,7 @@ figure i.fa-trash:hover {
 
 .select-images p {
 	color: #444;
-	font-size: 12px;
+	font-size: 14px;
 }
 
 /* Formulaire */
@@ -649,15 +665,14 @@ figure i.fa-trash:hover {
 }
 
 .contener-select label {
-	margin-top: 21px;
-	margin-bottom: 10px;
+	margin-top: 30px;
 	color: #3D3D3D;
-	font-size: 14px;
+	font-size: 16px;
 }
 
 .contener-select input,
 .contener-select select {
-	height: 50px;
+	height: 60px;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 	padding: 0 15px;
@@ -670,14 +685,17 @@ figure i.fa-trash:hover {
 	background-color: #A7A7A7;
 	border: none;
 	border-radius: 60px;
-	color: white;
-	width: 237px;
-	height: 36px;
 	position: absolute;
-	bottom: 55px;
+	bottom: 65px;
 	left: 50%;
 	transform: translateX(-50%);
+	padding: 13px 130px;
+}
 
+.btn-valider span {
+	font-size: 20px;
+	font-family: 'syne';
+	color: white;
 }
 
 .btn-valider-active {
@@ -690,7 +708,6 @@ figure i.fa-trash:hover {
 	right: 235px;
 	color: red;
 	text-align: center;
-	margin: 20px 0;
 	font-size: 20px;
 	display: none;
 }

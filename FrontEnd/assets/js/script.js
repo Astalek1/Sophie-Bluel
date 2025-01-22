@@ -13,42 +13,40 @@ export async function createGallery() {
     const container = document.getElementById("gallery")
     container.innerHTML = '';
 
-    try {
-        // Récupère les works depuis l'API
-        const works = await getWorksApi();
 
-        // Vérifie si le conteneur existe
-        if (!container) {
-            console.error("Le conteneur spécifié est introuvable !");
-            return;
-        }
+    // Récupère les works depuis l'API
+    const works = await getWorksApi();
 
-        // Parcourt les données pour créer les éléments HTML
-        works.forEach(item => {
-            const figure = document.createElement('figure');
-            figure.dataset.categoryId = item.categoryId;
-
-            const img = document.createElement('img');
-            img.src = item.imageUrl;
-            img.alt = item.title;
-
-            const figcaption = document.createElement('figcaption');
-            figcaption.textContent = item.title;
-
-            figure.appendChild(img);
-            figure.appendChild(figcaption);
-            container.appendChild(figure); // Ajoute la galerie au conteneur spécifié
-        });
-
-        return works;
-    } catch (error) {
-        console.error("erreur lors de la création de la galerie : ", error);
+    // Vérifie si le conteneur existe
+    if (!container) {
+        console.error("Le conteneur spécifié est introuvable !");
+        return;
     }
+
+    // Parcourt les données pour créer les éléments HTML
+    works.forEach(item => {
+        const figure = document.createElement('figure');
+        figure.dataset.categoryId = item.categoryId;
+
+        const img = document.createElement('img');
+        img.src = item.imageUrl;
+        img.alt = item.title;
+
+        const figcaption = document.createElement('figcaption');
+        figcaption.textContent = item.title;
+
+        figure.appendChild(img);
+        figure.appendChild(figcaption);
+        container.appendChild(figure); // Ajoute la galerie au conteneur spécifié
+    });
+
+    return works;
+
 }
 
 //...............mise en place  des filtres......................................
-async function filtersSelect() {
 
+async function filtersSelect() {
 
     // Récupération des catégories via fetch
     const response = await fetch("http://localhost:5678/api/categories");
@@ -57,6 +55,7 @@ async function filtersSelect() {
 
     // Ajout de "Tous" directement
     const categoriesList = [{ id: 0, name: "Tous" }, ...categories];
+
     // Création du conteneur pour les filtres
     const filterContainer = document.createElement("div");
     filterContainer.classList.add("filters");
@@ -156,4 +155,4 @@ if (sessionStorage.getItem('token')) {
 } else {
     await filtersSelect();
     createGallery();
-}
+} 
