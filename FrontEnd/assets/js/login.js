@@ -17,7 +17,6 @@ function initializeLogin() {
 
         if (email === "" && password === "") {
             if (!emptyMessage) {
-                console.log("champs vide");
                 emptyMessage = document.createElement(`p`);
                 emptyMessage.classList.add("emptyFields");
                 emptyMessage.style.color = "red";
@@ -48,17 +47,14 @@ async function loginValidation(email, password) {
     const data = await response.json();
 
     if (data.token) {
-        console.log("login valide")
         sessionStorage.setItem("token", data.token);
-        console.log(sessionStorage);
         //retour vers la page projet en activant le mode administateur.
         window.location.href = "./index.html";
     } else {
-        console.log("mauvais mdp");
-
         const messageLoginError = "Erreur de login";
         let messageError = document.querySelector(".errorMessage");
         let emptyMessage = document.querySelector(".emptyFields");
+
         if (!messageError) {
             messageError = document.createElement(`p`);
             messageError.classList.add("errorMessage");

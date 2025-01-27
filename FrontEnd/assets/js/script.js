@@ -38,8 +38,6 @@ export async function createGallery() {
         figure.appendChild(figcaption);
         container.appendChild(figure); // Ajoute la galerie au conteneur spécifié
     });
-
-    return works;
 }
 
 //...............mise en place  des filtres......................................
@@ -53,7 +51,6 @@ async function filtersSelect() {
 
     // Ajout de "Tous" directement
     const categoriesList = [{ id: 0, name: "Tous" }, ...categories];
-
     // Création du conteneur pour les filtres
     const filterContainer = document.createElement("div");
     filterContainer.classList.add("filters");
@@ -97,10 +94,8 @@ async function filtersSelect() {
                     item.style.display = "none";
                 }
             });
-
         });
     });
-
 }
 
 function editionMode() {

@@ -1,12 +1,11 @@
 import { getWorksApi, createGallery } from "./script.js";
 
-export async function modalGallery() {
+async function modalGallery() {
 
     const modalContainer = document.querySelector('.modal-container');
 
     // Vérifier si le conteneur existe
     if (!modalContainer) {
-        console.error("Le conteneur de la modale est introuvable !");
         return;
     }
 
@@ -151,22 +150,23 @@ function closeModalGeneral() {
 
 /************modification de l'image************ */
 
-function imageModification() {
-    const fileInput = document.querySelector('.select-images input[type="file"]');
+
+
+function visualisationImage(event) {
     const imageContainer = document.querySelector(".select-images");
     const imageIcon = document.querySelector(".select-images i");
+
+    const img = document.createElement('img');
+    img.src = event.target.result;
+
+    imageIcon.style.display = 'none';
+    imageContainer.insertBefore(img, imageContainer.querySelector('.ajouter'));
+}
+
+
+function imageValidation() {
+    const fileInput = document.querySelector('.select-images input[type="file"]');
     const ajouterDiv = document.querySelector('.select-images .ajouter');
-
-
-    function visualisationImage(event) {
-        const img = document.createElement('img');
-        img.src = event.target.result;
-
-        imageContainer.querySelector('img')?.remove();
-        imageIcon.style.display = 'none';
-        imageContainer.insertBefore(img, imageContainer.querySelector('.ajouter'));
-    }
-
 
     fileInput.addEventListener("change", event => {
         const file = event.target.files[0];
@@ -293,8 +293,6 @@ function validateModal() {
     const modal2 = document.getElementById("modal2");
     const modalBackground = document.getElementById("modal-background");
 
-
-
     btnValider.addEventListener("click", async (event) => {
         event.preventDefault();
 
@@ -304,7 +302,7 @@ function validateModal() {
             return;
         }
         errorMessage.style.display = "none";
-        console.log("Formulaire valide");
+
         const formData = new FormData();
         formData.append('image', fileInput.files[0]);
         formData.append('title', projectName.value);
@@ -344,8 +342,10 @@ function validateModal() {
 
 function activeButtonValidate() {
     const btnValider = document.querySelector(".btn-valider");
+    const errorMessage = document.getElementById("error-message");
 
     if (verifyInputs()) {
+        errorMessage.style.display = "none"; // si message présent.
         btnValider.classList.add("btn-valider-active");
     } else {
         btnValider.classList.remove("btn-valider-active");
@@ -353,5 +353,5 @@ function activeButtonValidate() {
 }
 
 closeModalGeneral();
-imageModification();
+imageValidation();
 validateModal();
