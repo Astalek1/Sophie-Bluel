@@ -1,0 +1,7 @@
+{
+    "build": {
+      "builder": "railpack",
+      "buildCommand": "npm install",
+      "startCommand": "node app.js"
+    }
+  }
