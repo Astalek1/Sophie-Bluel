@@ -9,4 +9,8 @@ router.post('/', auth, multer, checkWork, workCtrl.create);
 router.get('/', workCtrl.findAll);
 router.delete('/:id', auth, workCtrl.delete);
 
+router.get('/test', (req, res) => {
+    res.status(200).json({ message: '✅ API accessible depuis l’extérieur !' });
+  });
+
 module.exports = router;
