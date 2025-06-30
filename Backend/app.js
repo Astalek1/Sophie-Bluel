@@ -10,6 +10,7 @@ const app = express()
 app.use(cors({
   origin: 'https://astalek1.github.io'
 }));
+console.log('✅ CORS autorisé pour GitHub Pages');
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(helmet({
