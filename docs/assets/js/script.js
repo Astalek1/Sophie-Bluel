@@ -2,7 +2,7 @@
 import { openModal } from './modal.js';
 
 export async function getWorksApi() {
-    const response = await fetch("http://localhost:5678/api/works");
+    const response = await fetch("https://sophie-bluel-production.up.railway.app/api/works");
     const works = await response.json();
 
     return works;
@@ -45,7 +45,7 @@ export async function createGallery() {
 async function filtersSelect() {
 
     // Récupération des catégories via fetch
-    const response = await fetch("http://localhost:5678/api/categories");
+    const response = await fetch("https://sophie-bluel-production.up.railway.app/api/categories");
     const categories = await response.json();
 
 

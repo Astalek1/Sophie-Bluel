@@ -42,7 +42,7 @@ async function modalGallery() {
         deleteIcon.addEventListener('click', async () => {
 
             const token = sessionStorage.getItem('token');
-            const response = await fetch(`http://localhost:5678/api/works/${figure.dataset.id}`, {
+            const response = await fetch(`'https://sophie-bluel-production.up.railway.app/api/works/${figure.dataset.id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -197,7 +197,7 @@ function imageValidation() {
 
 
 async function displayCategoriesSelect() {
-    const response = await fetch('http://localhost:5678/api/categories');
+    const response = await fetch('https://sophie-bluel-production.up.railway.app/api/categories');
     const categories = await response.json();
 
     const selectCategories = document.getElementById("Catégories");
@@ -309,7 +309,7 @@ function validateModal() {
         formData.append('category', categories.value);
 
         const token = sessionStorage.getItem('token');
-        const response = await fetch('http://localhost:5678/api/works', {
+        const response = await fetch('https://sophie-bluel-production.up.railway.app/api/works', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`
