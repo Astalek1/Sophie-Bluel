@@ -7,7 +7,9 @@ const swaggerUi = require('swagger-ui-express')
 const yaml = require('yamljs')
 const swaggerDocs = yaml.load('swagger.yaml')
 const app = express()
-app.use(cors())
+app.use(cors({
+  origin: 'https://astalek1.github.io'
+}));
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(helmet({
