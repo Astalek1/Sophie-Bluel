@@ -42,7 +42,7 @@ async function modalGallery() {
         deleteIcon.addEventListener('click', async () => {
 
             const token = sessionStorage.getItem('token');
-            const response = await fetch(`'https://sophie-bluel-production.up.railway.app/api/works/${figure.dataset.id}`, {
+            const response = await fetch(`https://sophie-bluel-production.up.railway.app/api/works/${figure.dataset.id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`
