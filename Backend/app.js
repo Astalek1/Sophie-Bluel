@@ -7,6 +7,7 @@ const swaggerUi = require('swagger-ui-express')
 const yaml = require('yamljs')
 const swaggerDocs = yaml.load('swagger.yaml')
 const app = express()
+
 app.use(cors({
   origin: 'https://astalek1.github.io'
 }));
@@ -27,4 +28,9 @@ app.use('/api/users', userRoutes);
 app.use('/api/categories', categoriesRoutes);
 app.use('/api/works', worksRoutes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
+
+app.get('/api/works/test', (req, res) => {
+  res.json({ message: "✅ API accessible depuis l’extérieur !" });
+});
+
 module.exports = app;
