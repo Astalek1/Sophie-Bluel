@@ -3,7 +3,14 @@ const Works = db.works
 
 exports.findAll = async (req, res) =>  {
 	const works = await Works.findAll({include: 'category'});
-	return res.status(200).json(works);
+	const formattedWorks = works.map(work => {
+		return {
+		  ...work.dataValues,
+		  imageUrl: work.imageUrl.replace('http://localhost:5678', 'https://sophie-bluel-production.up.railway.app')
+		};
+	  });
+	  
+	  return res.status(200).json(formattedWorks);
 }
 
 exports.create = async (req, res) => {
