@@ -1,0 +1,23 @@
+name: Keep Sophie Bluel alive
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # exécute le script tous les jours à minuit UTC
+  workflow_dispatch: # permet un lancement manuel si besoin
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run keepalive script
+        run: |
+          npm install node-fetch@3
+          node keepalive.js
